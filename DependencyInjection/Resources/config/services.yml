@@ -1,9 +1,0 @@
-services:
-    twig.extension.i18n_locale:
-        class: Snowcap\I18nBundle\Twig\Extension\LocaleExtension
-        arguments: [@service_container]
-        tags:
-            - { name: twig.extension }
-    i18n_routing.router:
-        class: Snowcap\I18nBundle\Routing\Router
-        arguments: [@snowcap_i18n_routing.router.parent]

@@ -1,5 +1,4 @@
 <?php
-
 namespace Snowcap\I18nBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
