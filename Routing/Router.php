@@ -7,12 +7,12 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Router as BaseRouter;
+use Symfony\Bundle\FrameworkBundle\Routing\Router as BaseRouter;
 
 class Router extends BaseRouter implements RouterInterface
 {
     /**
-     * @var RouterInterface
+     * @var \Symfony\Bundle\FrameworkBundle\Routing\Router
      */
     private $router;
 
@@ -24,6 +24,12 @@ class Router extends BaseRouter implements RouterInterface
     public function __construct(RouterInterface $router)
     {
         $this->router = $router;
+
+        $this->resource = $this->router->resource;
+        $this->context = $this->router->context;
+        $this->defaults = $this->router->defaults;
+        $this->setOptions($this->router->options);
+
     }
 
     /**
