@@ -1,7 +1,7 @@
 services:
     twig.extension.i18n_locale:
         class: Snowcap\I18nBundle\Twig\Extension\LocaleExtension
-        arguments: [@service_container]
+        arguments: [@service_container, %locales%]
         tags:
             - { name: twig.extension }
     snowcap_i18n_routing.router:
