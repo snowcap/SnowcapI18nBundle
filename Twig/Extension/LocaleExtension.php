@@ -3,6 +3,8 @@
 namespace Snowcap\I18nBundle\Twig\Extension;
 
 use \Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Locale\Locale;
 
 class LocaleExtension extends \Twig_Extension
 {
@@ -34,11 +36,6 @@ class LocaleExtension extends \Twig_Extension
     public function getName()
     {
         return '_locale';
-    }
-
-    public function setActiveLocales(array $locales)
-    {
-        $this->activeLocales = $locales;
     }
 
     public function getActiveLocales($locale = null)
