@@ -1,0 +1,10 @@
+framework:
+    secret: some secret
+    templating: { engines: ['twig'] }
+    router: { resource: "%kernel.root_dir%/../../../Resources/config/routing.yml" }
+    test: ~
+    session:
+        storage_id: session.storage.filesystem
+
+parameters:
+    locales: [fr, en]

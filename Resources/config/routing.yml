@@ -1,0 +1,3 @@
+snowcap_i18n_catalog:
+    pattern: /i18n/catalog/{catalog}/{locale}
+    defaults: { _controller: SnowcapI18nBundle:I18nJavascript:catalog }
