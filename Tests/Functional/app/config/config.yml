@@ -2,6 +2,7 @@ framework:
     secret: some secret
     templating: { engines: ['twig'] }
     router: { resource: "%kernel.root_dir%/../../../Resources/config/routing.yml" }
+    translator: { fallback: en }
     test: ~
     session:
         storage_id: session.storage.filesystem

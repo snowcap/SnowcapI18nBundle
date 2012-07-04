@@ -1,0 +1,46 @@
+(function($){
+    var trans = function(message, arguments, domain, locale) {
+        if(typeof arguments === "undefined") {
+            var arguments = {};
+        }
+        if(typeof domain === "undefined") {
+            var domain = "messages";
+        }
+        if(typeof locale === "undefined") {
+            var locale = "{{ _locale }}";
+        }
+        var messages = {
+        {% for locale, domains in translations %}
+            "{{ locale }}": {
+            {% for domain, values in domains %}
+                "{{ domain }}": {
+                {% for key, value in values %}
+                    "{{ key }}": "{{ value }}"{% if not loop.last %},{% endif %}
+                {% endfor %}
+                }{% if not loop.last %},{% endif %}
+            {% endfor %}
+            }{% if not loop.last %},{% endif %}
+        {% endfor %}
+        };
+
+        if(! (locale in messages)) {
+            return message;
+        }
+        if(! (domain in messages[locale])) {
+            return message;
+        }
+        if(! (message in messages[locale][domain])) {
+            return message;
+        }
+
+        var translatedMessage = messages[locale][domain][message];
+
+        for(key in arguments) {
+            translatedMessage = translatedMessage.replace(new RegExp(key, 'g'), arguments[key]);
+        }
+
+        return translatedMessage;
+
+    };
+    $.fn.trans = trans;
+})(jQuery);

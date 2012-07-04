@@ -1,3 +1,6 @@
+parameters:
+    translator.class: Snowcap\I18nBundle\Translation\Translator
+
 services:
     twig.extension.i18n_locale:
         class: Snowcap\I18nBundle\Twig\Extension\LocaleExtension
