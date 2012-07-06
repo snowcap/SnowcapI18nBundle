@@ -31,5 +31,5 @@
     "autoload": {
         "psr-0": { "Snowcap\\I18nBundle": "" }
     },
-    "target-dir": "Snowcap/I18nBundle",
+    "target-dir": "Snowcap/I18nBundle"
 }
