@@ -1,12 +1,36 @@
 {
+    "name": "snowcap/i18n-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony SnowcapI18nBundle",
+    "keywords": ["i18n", "localization", "text"],
+    "homepage": "https://github.com/snowcap/SnowcapI18nBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pierre Vanliefland",
+            "email": "pierre@snowcap.be"
+        },
+        {
+            "name": "Edwin Hermans",
+            "email": "edwin@snowcap.be"
+        },
+        {
+            "name": "Jérôme Poskin",
+            "email": "jerome@snowcap.be"
+        },
+        {
+            "name": "Snowcap",
+            "homepage": "http://www.snowcap.be"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/symfony": "2.1.*",
+        "symfony/framework-bundle": "2.1.*"
+    },
     "autoload": {
         "psr-0": { "Snowcap\\I18nBundle": "" }
     },
     "target-dir": "Snowcap/I18nBundle",
-    "require": {
-        "symfony/symfony": "v2.0.15",
-        "doctrine/orm": "2.1.7",
-        "sensio/framework-extra-bundle": "2.0.*"
-
-    }
+    "minimum-stability": "dev"
 }
