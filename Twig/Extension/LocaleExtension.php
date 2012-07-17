@@ -87,11 +87,48 @@ class LocaleExtension extends \Twig_Extension
             $translatedLocales = $this->activeLocales;
         }
         else {
-            $displayLocales = Locale::getDisplayLocales($locale);
+            if (strpos($locale, '_') > 0) {
+                $displayCountryLocales = Locale::getDisplayLocales($locale);
+                $displayLgLocales = Locale::getDisplayLocales(substr($locale, 0, strpos($locale, '_')));
+                $displayLocales = array_merge($displayLgLocales, $displayCountryLocales);
+            } else {
+                $displayLocales = Locale::getDisplayLocales($locale);
+            }
+
+            // time to return a translated locale
             $translatedLocales = array_map(
-                function($element) use($displayLocales)
+                function($element) use($displayLocales, $locale)
                 {
-                    return $displayLocales[$element];
+                    if (array_key_exists($element, $displayLocales)) {
+                        // perfect, we have the full translated locale
+                        return $displayLocales[$element];
+                    } elseif (strpos($element, '_') > 0) {
+                        // ow we don't, let's see if it's a locale containing the country
+                        list($lg, $country) = explode('_', $element);
+
+                        if (strpos($locale, '_') > 0) {
+                            // Yep! it's a full locale. Let's merge the translated countries for the full locale + his parent, the lg
+                            $displayCountriesChild = Locale::getDisplayCountries($locale);
+                            $displayCountriesParent = Locale::getDisplayCountries(substr($locale, 0, strpos($locale, '_')));
+                            $displayCountries = array_merge($displayCountriesParent, $displayCountriesChild);
+                        } else {
+                            // it's just a lg
+                            $displayCountries = Locale::getDisplayCountries($locale);
+                        }
+
+                        if (array_key_exists($country, $displayCountries)) {
+                            // ok we do have a country translation, let's manually build the full translation string
+                            $displayCountry = $displayCountries[$country];
+                            $displayLg = Locale::getDisplayLanguage($lg, $locale);
+
+                            return $displayLg . ' (' . $displayCountry . ')';
+                        } else {
+                            // I give up. I just return the received locale.
+                            return $element;
+                        }
+                    } else {
+                        return $element;
+                    }
                 }, $this->activeLocales
             );
         }
