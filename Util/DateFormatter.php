@@ -51,10 +51,6 @@ class DateFormatter {
     {
         $dateFormatter = \IntlDateFormatter::create($locale ?: \Locale::getDefault(), $this->formats[$dateType], $this->formats[$timeType], date_default_timezone_get(), null, $pattern);
 
-        if (!defined('PHP_VERSION_ID') || PHP_VERSION_ID < 50304) {
-            $date = $date->getTimestamp();
-        }
-
         return $dateFormatter->format($date);
     }
 
