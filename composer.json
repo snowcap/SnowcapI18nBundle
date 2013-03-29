@@ -31,5 +31,10 @@
     "autoload": {
         "psr-0": { "Snowcap\\I18nBundle": "" }
     },
-    "target-dir": "Snowcap/I18nBundle"
+    "target-dir": "Snowcap/I18nBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2.x-dev"
+        }
+    }
 }
