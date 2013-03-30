@@ -15,6 +15,9 @@ class LocaleExtension extends \Twig_Extension
      */
     private $container;
 
+    /**
+     * @var array
+     */
     private $activeLocales = array();
 
     /**
@@ -174,5 +177,4 @@ class LocaleExtension extends \Twig_Extension
 
         return $formatter->format($date, $dateType, $timeType, $locale, $pattern);
     }
-
 }
