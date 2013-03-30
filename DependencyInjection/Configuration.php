@@ -25,7 +25,13 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('locales')
                     ->isRequired()
                     ->cannotBeEmpty()
-                    ->prototype('scalar')
+                    ->prototype('scalar')->end()
+                ->end()
+                ->arrayNode('routing')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('translation_domain')->defaultValue('urls')->end()
+                    ->end()
                 ->end()
             ->end();
 

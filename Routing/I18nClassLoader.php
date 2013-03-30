@@ -6,6 +6,7 @@ use Doctrine\Common\Annotations\Reader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Routing\AnnotatedRouteControllerLoader;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class I18nClassLoader extends AnnotatedRouteControllerLoader {
     /**
@@ -14,18 +15,33 @@ class I18nClassLoader extends AnnotatedRouteControllerLoader {
     protected $routeAnnotationClass = 'Snowcap\\I18nBundle\\Annotation\\I18nRoute';
 
     /**
+     * @var \Symfony\Component\Translation\TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * @var array
      */
     private $locales;
 
     /**
-     * @param Reader $reader
+     * @var string
      */
-    public function __construct(Reader $reader, array $locales)
+    private $translationDomain;
+
+    /**
+     * @param Reader $reader
+     * @param TranslatorInterface $translator
+     * @param array $locales
+     * @param string $translationDomain
+     */
+    public function __construct(Reader $reader, TranslatorInterface $translator, array $locales, $translationDomain)
     {
         parent::__construct($reader);
 
+        $this->translator = $translator;
         $this->locales = $locales;
+        $this->translationDomain = $translationDomain;
     }
 
     /**
@@ -55,7 +71,8 @@ class I18nClassLoader extends AnnotatedRouteControllerLoader {
         foreach($this->locales as $locale) {
             $annotation = new Route($annot->data);
             $annotation->setName($annotation->getName() . '_' . $locale);
-            $annotation->setPattern(trim($locale . '/' . $annotation->getPattern(), '/'));
+            $translatedPattern = $this->translator->trans($annotation->getPattern(), array(), $this->translationDomain, $locale);
+            $annotation->setPattern(trim($locale . '/' . $translatedPattern, '/'));
             $annotation->setDefaults(array_merge($annotation->getDefaults(), array('_locale' => $locale)));
 
             parent::addRoute($collection, $annotation, $globals, $class, $method);

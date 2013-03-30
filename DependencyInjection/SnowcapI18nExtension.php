@@ -25,8 +25,12 @@ class SnowcapI18nExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $container->setParameter('snowcap_i18n.locales', $config['locales']);
+
         // Routing
         $this->addClassesToCompile(array('Snowcap\I18nBundle\Routing\I18nRouter'));
-        $container->setParameter('snowcap_i18n.locales', $config['locales']);
+        foreach(array('translation_domain') as $parameter) {
+            $container->setParameter('snowcap_i18n.routing.' . $parameter, $config['routing'][$parameter]);
+        }
     }
 }
