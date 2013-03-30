@@ -35,7 +35,7 @@ class LocaleExtension extends \Twig_Extension
     public function getGlobals()
     {
         return array(
-            '_locale' => $this->container->get('session')->getLocale(),
+            '_locale' => $this->container->get('request')->getLocale(),
         );
     }
 
