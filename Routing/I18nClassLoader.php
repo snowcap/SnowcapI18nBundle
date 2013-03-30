@@ -14,11 +14,18 @@ class I18nClassLoader extends AnnotatedRouteControllerLoader {
     protected $routeAnnotationClass = 'Snowcap\\I18nBundle\\Annotation\\I18nRoute';
 
     /**
+     * @var array
+     */
+    private $locales;
+
+    /**
      * @param Reader $reader
      */
-    public function __construct(Reader $reader)
+    public function __construct(Reader $reader, array $locales)
     {
         parent::__construct($reader);
+
+        $this->locales = $locales;
     }
 
     /**
@@ -45,7 +52,7 @@ class I18nClassLoader extends AnnotatedRouteControllerLoader {
         \ReflectionClass $class,
         \ReflectionMethod $method
     ) {
-        foreach(array('en', 'fr') as $locale) {
+        foreach($this->locales as $locale) {
             $annotation = new Route($annot->data);
             $annotation->setName($annotation->getName() . '_' . $locale);
             $annotation->setPattern(trim($locale . '/' . $annotation->getPattern(), '/'));
@@ -54,6 +61,4 @@ class I18nClassLoader extends AnnotatedRouteControllerLoader {
             parent::addRoute($collection, $annotation, $globals, $class, $method);
         }
     }
-
-
 }

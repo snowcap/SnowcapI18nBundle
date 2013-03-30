@@ -1,16 +1,16 @@
 parameters:
-    translator.class: Snowcap\I18nBundle\Translation\Translator
+    snowcap_i18n.locales: ~
 
 services:
     twig.extension.i18n_locale:
         class: Snowcap\I18nBundle\Twig\Extension\LocaleExtension
-        arguments: [@service_container, %locales%]
+        arguments: [@service_container, %snowcap_i18n.locales%]
         tags:
             - { name: twig.extension }
 
     snowcap_i18n.routing_loader_class:
         class: Snowcap\I18nBundle\Routing\I18nClassLoader
-        arguments: [@annotation_reader]
+        arguments: [@annotation_reader, %snowcap_i18n.locales%]
         tags:
             - { name: routing.loader }
 

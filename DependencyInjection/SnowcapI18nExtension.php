@@ -22,11 +22,11 @@ class SnowcapI18nExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
-        $this->addClassesToCompile(array('Snowcap\I18nBundle\Routing\I18nRouter'));
-
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('router.class', 'Snowcap\I18nBundle\Routing\I18nRouter');
+        // Routing
+        $this->addClassesToCompile(array('Snowcap\I18nBundle\Routing\I18nRouter'));
+        $container->setParameter('snowcap_i18n.locales', $config['locales']);
     }
 }
