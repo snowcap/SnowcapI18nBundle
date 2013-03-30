@@ -49,13 +49,32 @@ class I18nYamlFileLoader extends YamlFileLoader {
         $host = isset($config['host']) ? $config['host'] : '';
         $schemes = isset($config['schemes']) ? $config['schemes'] : array();
         $methods = isset($config['methods']) ? $config['methods'] : array();
+        $i18n = isset($config['i18n']) ? $config['i18n'] : true;
 
         foreach($this->locales as $locale) {
-            $i18nName = $this->helper->alterName($name, $locale);
-            $i18nPath = $this->helper->alterPath($config['path'], $locale);
-            $i18nDefaults = $this->helper->alterdefaults($defaults, $locale);
-            $route = new Route($i18nPath, $i18nDefaults, $requirements, $options, $host, $schemes, $methods);
+            $route = new Route($config['path'], $defaults, $requirements, $options, $host, $schemes, $methods);
+
+            if($i18n) {
+                $route->setPath($this->helper->alterPath($config['path'], $locale));
+                $route->setDefaults($this->helper->alterdefaults($defaults, $locale));
+            }
+
+            $i18nName = $i18n ? $this->helper->alterName($name, $locale) : $name;
             $collection->add($i18nName, $route);
         }
+    }
+
+    /**
+     * @param array $config
+     * @param string $name
+     * @param string $path
+     * @todo Find a better solution ($availableKeys is private so no better way to "override" validate for now)
+     */
+    protected function validate($config, $name, $path)
+    {
+        if(isset($config['i18n'])) {
+            unset($config['i18n']);
+        }
+        parent::validate($config, $name, $path);
     }
 }

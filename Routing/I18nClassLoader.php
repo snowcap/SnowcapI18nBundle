@@ -62,11 +62,17 @@ class I18nClassLoader extends AnnotatedRouteControllerLoader {
         \ReflectionClass $class,
         \ReflectionMethod $method
     ) {
+        $i18n = isset($annot->data['i18n']) ? $annot->data['i18n'] : true;
+        unset($annot->data['i18n']);
+
         foreach($this->locales as $locale) {
             $i18nAnnot = new Route($annot->data);
-            $i18nAnnot->setName($this->helper->alterName($i18nAnnot->getName(), $locale));
-            $i18nAnnot->setPath($this->helper->alterPath($i18nAnnot->getPath(), $locale));
-            $i18nAnnot->setDefaults($this->helper->alterdefaults($i18nAnnot->getDefaults(), $locale));
+
+            if($i18n) {
+                $i18nAnnot->setName($this->helper->alterName($i18nAnnot->getName(), $locale));
+                $i18nAnnot->setPath($this->helper->alterPath($i18nAnnot->getPath(), $locale));
+                $i18nAnnot->setDefaults($this->helper->alterdefaults($i18nAnnot->getDefaults(), $locale));
+            }
 
             parent::addRoute($collection, $i18nAnnot, $globals, $class, $method);
         }
