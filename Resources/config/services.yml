@@ -7,6 +7,15 @@ services:
         arguments: [@service_container, %locales%]
         tags:
             - { name: twig.extension }
-    snowcap_i18n_routing.router:
-        class: Snowcap\I18nBundle\Routing\Router
-        arguments: [@snowcap_i18n_routing.router.parent]
+
+    snowcap_i18n.routing_loader_class:
+        class: Snowcap\I18nBundle\Routing\I18nClassLoader
+        arguments: [@annotation_reader]
+        tags:
+            - { name: routing.loader }
+
+    snowcap_i18n.routing_loader_directory:
+        class: Snowcap\I18nBundle\Routing\I18nDirectoryLoader
+        arguments: [@file_locator, @snowcap_i18n.routing_loader_class]
+        tags:
+            - { name: routing.loader }
