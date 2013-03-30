@@ -18,6 +18,6 @@ class I18nDirectoryLoader extends AnnotationDirectoryLoader {
             return false;
         }
 
-        return is_string($resource) && is_dir($path) && (!$type || 'i18n' === $type);
+        return is_string($resource) && is_dir($path) && (!$type || 'annotation_i18n' === $type);
     }
 }

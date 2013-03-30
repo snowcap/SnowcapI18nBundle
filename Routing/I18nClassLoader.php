@@ -15,9 +15,9 @@ class I18nClassLoader extends AnnotatedRouteControllerLoader {
     protected $routeAnnotationClass = 'Snowcap\\I18nBundle\\Annotation\\I18nRoute';
 
     /**
-     * @var \Symfony\Component\Translation\TranslatorInterface
+     * @var I18nLoaderHelper
      */
-    private $translator;
+    private $helper;
 
     /**
      * @var array
@@ -25,23 +25,17 @@ class I18nClassLoader extends AnnotatedRouteControllerLoader {
     private $locales;
 
     /**
-     * @var string
-     */
-    private $translationDomain;
-
-    /**
      * @param Reader $reader
      * @param TranslatorInterface $translator
      * @param array $locales
      * @param string $translationDomain
      */
-    public function __construct(Reader $reader, TranslatorInterface $translator, array $locales, $translationDomain)
+    public function __construct(Reader $reader, I18nLoaderHelper $helper, array $locales)
     {
         parent::__construct($reader);
 
-        $this->translator = $translator;
+        $this->helper = $helper;
         $this->locales = $locales;
-        $this->translationDomain = $translationDomain;
     }
 
     /**
@@ -51,7 +45,7 @@ class I18nClassLoader extends AnnotatedRouteControllerLoader {
      */
     public function supports($resource, $type = null)
     {
-        return is_string($resource) && preg_match('/^(?:\\\\?[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)+$/', $resource) && (!$type || 'i18n' === $type);
+        return is_string($resource) && preg_match('/^(?:\\\\?[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)+$/', $resource) && (!$type || 'annotation_i18n' === $type);
     }
 
     /**
@@ -69,13 +63,12 @@ class I18nClassLoader extends AnnotatedRouteControllerLoader {
         \ReflectionMethod $method
     ) {
         foreach($this->locales as $locale) {
-            $annotation = new Route($annot->data);
-            $annotation->setName($annotation->getName() . '_' . $locale);
-            $translatedPattern = $this->translator->trans($annotation->getPattern(), array(), $this->translationDomain, $locale);
-            $annotation->setPattern(trim($locale . '/' . $translatedPattern, '/'));
-            $annotation->setDefaults(array_merge($annotation->getDefaults(), array('_locale' => $locale)));
+            $i18nAnnot = new Route($annot->data);
+            $i18nAnnot->setName($this->helper->alterName($i18nAnnot->getName(), $locale));
+            $i18nAnnot->setPath($this->helper->alterPath($i18nAnnot->getPath(), $locale));
+            $i18nAnnot->setDefaults($this->helper->alterdefaults($i18nAnnot->getDefaults(), $locale));
 
-            parent::addRoute($collection, $annotation, $globals, $class, $method);
+            parent::addRoute($collection, $i18nAnnot, $globals, $class, $method);
         }
     }
 }
