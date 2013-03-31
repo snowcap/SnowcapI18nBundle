@@ -41,7 +41,8 @@ class I18nLoaderHelper {
      */
     public function alterPath($path, $locale)
     {
-        $translatedPath = $this->translator->trans($path, array(), $this->translationDomain, $locale);
+        $translatedPath = trim($this->translator->trans($path, array(), $this->translationDomain, $locale), '/');
+
         return trim($locale . '/' . $translatedPath, '/');
     }
 

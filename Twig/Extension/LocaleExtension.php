@@ -39,6 +39,7 @@ class LocaleExtension extends \Twig_Extension
     {
         return array(
             '_locale' => $this->container->get('request')->getLocale(),
+            '_locales' => $this->activeLocales
         );
     }
 
