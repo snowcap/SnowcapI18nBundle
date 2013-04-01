@@ -50,6 +50,7 @@ class I18nRouter extends Router {
                 throw new \UnexpectedValueException(sprintf('The locale %s has not ben registered in the snowcap_i18n config', $locale));
             }
             $i18nName = $name . '_' . $locale;
+            unset($parameters['_locale']);
 
             return parent::generate($i18nName, $parameters, $referenceType);
         }

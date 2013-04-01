@@ -62,6 +62,7 @@ class LocaleExtension extends \Twig_Extension
     {
         return array(
             'country' => new \Twig_Filter_Method($this, 'getCountry'),
+            'language' => new \Twig_Filter_Method($this, 'getLanguage'),
             'locale_date' => new \Twig_Filter_Method($this, 'getLocaleDate'),
         );
     }
@@ -155,6 +156,19 @@ class LocaleExtension extends \Twig_Extension
         $countries = Locale::getDisplayCountries($locale);
 
         return array_key_exists($country, $countries) ? $countries[$country] : $default;
+    }
+
+    /**
+     * @param string $locale
+     * @return string
+     */
+    public function getLanguage($locale, $displayLocale = null) {
+        if(null === $displayLocale) {
+            $displayLocale = $locale;
+        }
+        $languages = Locale::getDisplayLanguages($displayLocale);
+
+        return $languages[$locale];
     }
 
     /**
