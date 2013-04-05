@@ -2,6 +2,7 @@
 
 namespace Snowcap\I18nBundle\Routing;
 
+use Snowcap\I18nBundle\Registry;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
@@ -16,19 +17,19 @@ class I18nYamlFileLoader extends YamlFileLoader {
     /**
      * @var array
      */
-    private $locales;
+    private $registry;
 
     /**
      * @param FileLocatorInterface $locator
      * @param array $locales
      * @param string $translationDomain
      */
-    public function __construct(FileLocatorInterface $locator, I18nLoaderHelper $helper, array $locales)
+    public function __construct(FileLocatorInterface $locator, I18nLoaderHelper $helper, Registry $registry)
     {
         parent::__construct($locator);
 
         $this->helper = $helper;
-        $this->locales = $locales;
+        $this->registry = $registry;
     }
 
     /**
@@ -51,7 +52,7 @@ class I18nYamlFileLoader extends YamlFileLoader {
         $methods = isset($config['methods']) ? $config['methods'] : array();
         $i18n = isset($config['i18n']) ? $config['i18n'] : true;
 
-        foreach($this->locales as $locale) {
+        foreach($this->registry->getRegisteredLocales() as $locale) {
             $route = new Route($config['path'], $defaults, $requirements, $options, $host, $schemes, $methods);
 
             if($i18n) {

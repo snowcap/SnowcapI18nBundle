@@ -2,6 +2,7 @@
 
 namespace Snowcap\I18nBundle\Twig\Extension;
 
+use Snowcap\I18nBundle\Registry;
 use \Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Locale\Locale;
@@ -16,18 +17,18 @@ class LocaleExtension extends \Twig_Extension
     private $container;
 
     /**
-     * @var array
+     * @var \Snowcap\I18nBundle\Registry
      */
-    private $activeLocales = array();
+    private $registry;
 
     /**
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
-     * @param array $activeLocales
+     * @param ContainerInterface $container
+     * @param Registry $registry
      */
-    public function __construct(ContainerInterface $container, array $activeLocales = array())
+    public function __construct(ContainerInterface $container, Registry $registry)
     {
         $this->container = $container;
-        $this->activeLocales = $activeLocales;
+        $this->registry = $registry;
     }
 
     /**
@@ -39,7 +40,7 @@ class LocaleExtension extends \Twig_Extension
     {
         return array(
             '_locale' => $this->container->get('request')->getLocale(),
-            '_locales' => $this->activeLocales
+            '_locales' => $this->registry->getRegisteredLocales()
         );
     }
 
@@ -85,11 +86,13 @@ class LocaleExtension extends \Twig_Extension
      */
     public function getActiveLocales($locale = null)
     {
-        if (empty($this->activeLocales)) {
+        $registeredLocales = $this->registry->getRegisteredLocales();
+
+        if (empty($registeredLocales)) {
             return array();
         }
         elseif ($locale === null) {
-            $translatedLocales = $this->activeLocales;
+            $translatedLocales = $registeredLocales;
         }
         else {
             if (strpos($locale, '_') > 0) {
@@ -134,10 +137,10 @@ class LocaleExtension extends \Twig_Extension
                     } else {
                         return $element;
                     }
-                }, $this->activeLocales
+                }, $registeredLocales
             );
         }
-        return array_combine($this->activeLocales, $translatedLocales);
+        return array_combine($registeredLocales, $translatedLocales);
     }
 
     /**

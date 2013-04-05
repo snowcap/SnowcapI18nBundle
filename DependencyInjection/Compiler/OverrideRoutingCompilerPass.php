@@ -24,7 +24,7 @@ class OverrideRoutingCompilerPass implements CompilerPassInterface {
     public function process(ContainerBuilder $container)
     {
         $container->setParameter('router.class', 'Snowcap\I18nBundle\Routing\I18nRouter');
-        $container->getDefinition('router.default')->replaceArgument(4, $container->getParameter('snowcap_i18n.locales'));
+        $container->getDefinition('router.default')->replaceArgument(4, $container->getDefinition('snowcap_i18n'));
     }
 
 }

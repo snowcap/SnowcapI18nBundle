@@ -31,7 +31,7 @@ class I18nLoaderHelper {
      */
     public function alterName($name, $locale)
     {
-        return $name . '_' . $locale;
+        return $name . '.' . $locale;
     }
 
     /**

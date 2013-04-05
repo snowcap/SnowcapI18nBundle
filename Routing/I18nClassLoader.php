@@ -5,6 +5,7 @@ namespace Snowcap\I18nBundle\Routing;
 use Doctrine\Common\Annotations\Reader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Routing\AnnotatedRouteControllerLoader;
+use Snowcap\I18nBundle\Registry;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -20,22 +21,21 @@ class I18nClassLoader extends AnnotatedRouteControllerLoader {
     private $helper;
 
     /**
-     * @var array
+     * @var \Snowcap\I18nBundle\Registry
      */
-    private $locales;
+    private $registry;
 
     /**
      * @param Reader $reader
-     * @param TranslatorInterface $translator
-     * @param array $locales
-     * @param string $translationDomain
+     * @param I18nLoaderHelper $helper
+     * @param Registry $registry
      */
-    public function __construct(Reader $reader, I18nLoaderHelper $helper, array $locales)
+    public function __construct(Reader $reader, I18nLoaderHelper $helper, Registry $registry)
     {
         parent::__construct($reader);
 
         $this->helper = $helper;
-        $this->locales = $locales;
+        $this->registry = $registry;
     }
 
     /**
@@ -65,18 +65,18 @@ class I18nClassLoader extends AnnotatedRouteControllerLoader {
         $i18n = isset($annot->data['i18n']) ? $annot->data['i18n'] : true;
         unset($annot->data['i18n']);
 
-        foreach($this->locales as $locale) {
+        foreach($this->registry->getRegisteredLocales() as $locale) {
             $i18nAnnot = new Route($annot->data);
+            $i18nGlobals = $globals;
 
             if($i18n) {
                 $i18nAnnot->setName($this->helper->alterName($i18nAnnot->getName(), $locale));
                 $i18nAnnot->setPath($this->helper->alterPath($i18nAnnot->getPath(), $locale));
                 $i18nAnnot->setDefaults($this->helper->alterdefaults($i18nAnnot->getDefaults(), $locale));
-
-                $globals['path'] = rtrim('/' . $locale . '/' . ltrim($globals['path'], '/'), '/');
+                $i18nGlobals['path'] = rtrim('/' . $locale . '/' . ltrim($i18nGlobals['path'], '/'), '/');
             }
 
-            parent::addRoute($collection, $i18nAnnot, $globals, $class, $method);
+            parent::addRoute($collection, $i18nAnnot, $i18nGlobals, $class, $method);
         }
     }
 }

@@ -3,9 +3,13 @@ parameters:
     snowcap_i18n.routing.translation_domain: ~
 
 services:
+    snowcap_i18n:
+        class: Snowcap\I18nBundle\Registry
+        arguments: [%snowcap_i18n.locales%]
+
     snowcap_i18n.twig:
         class: Snowcap\I18nBundle\Twig\Extension\LocaleExtension
-        arguments: [@service_container, %snowcap_i18n.locales%]
+        arguments: [@service_container, @snowcap_i18n]
         tags:
             - { name: twig.extension }
 
@@ -15,7 +19,7 @@ services:
 
     snowcap_i18n.routing_loader_class:
         class: Snowcap\I18nBundle\Routing\I18nClassLoader
-        arguments: [@annotation_reader, @snowcap_i18n.routing_loader_helper, %snowcap_i18n.locales%]
+        arguments: [@annotation_reader, @snowcap_i18n.routing_loader_helper, @snowcap_i18n]
         tags:
             - { name: routing.loader }
 
@@ -27,6 +31,6 @@ services:
 
     snowcap_i18n.routing_loader_yaml:
         class: Snowcap\I18nBundle\Routing\I18nYamlFileLoader
-        arguments: [@file_locator, @snowcap_i18n.routing_loader_helper, %snowcap_i18n.locales%]
+        arguments: [@file_locator, @snowcap_i18n.routing_loader_helper, @snowcap_i18n]
         tags:
             - { name: routing.loader }
