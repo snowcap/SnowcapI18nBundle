@@ -72,6 +72,8 @@ class I18nClassLoader extends AnnotatedRouteControllerLoader {
                 $i18nAnnot->setName($this->helper->alterName($i18nAnnot->getName(), $locale));
                 $i18nAnnot->setPath($this->helper->alterPath($i18nAnnot->getPath(), $locale));
                 $i18nAnnot->setDefaults($this->helper->alterdefaults($i18nAnnot->getDefaults(), $locale));
+
+                $globals['path'] = rtrim('/' . $locale . '/' . ltrim($globals['path'], '/'), '/');
             }
 
             parent::addRoute($collection, $i18nAnnot, $globals, $class, $method);

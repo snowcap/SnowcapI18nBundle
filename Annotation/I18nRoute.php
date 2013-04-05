@@ -20,6 +20,11 @@ class I18nRoute {
      * @param array $data
      */
     public function __construct(array $data) {
+        if (isset($data['value'])) {
+            $data['path'] = $data['value'];
+            unset($data['value']);
+        }
+
         $this->data = $data;
     }
 

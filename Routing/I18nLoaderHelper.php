@@ -43,7 +43,7 @@ class I18nLoaderHelper {
     {
         $translatedPath = trim($this->translator->trans($path, array(), $this->translationDomain, $locale), '/');
 
-        return trim($locale . '/' . $translatedPath, '/');
+        return rtrim('/' . $translatedPath, '/');
     }
 
     /**
