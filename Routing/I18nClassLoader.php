@@ -73,6 +73,9 @@ class I18nClassLoader extends AnnotatedRouteControllerLoader {
                 $i18nAnnot->setName($this->helper->alterName($i18nAnnot->getName(), $locale));
                 $i18nAnnot->setPath($this->helper->alterPath($i18nAnnot->getPath(), $locale));
                 $i18nAnnot->setDefaults($this->helper->alterdefaults($i18nAnnot->getDefaults(), $locale));
+
+                $i18nGlobals['path'] = $this->helper->alterPath($i18nGlobals['path'], $locale);
+
                 $i18nGlobals['path'] = rtrim('/' . $locale . '/' . ltrim($i18nGlobals['path'], '/'), '/');
             }
 
