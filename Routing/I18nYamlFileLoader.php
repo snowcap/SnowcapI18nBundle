@@ -56,7 +56,7 @@ class I18nYamlFileLoader extends YamlFileLoader {
             $route = new Route($config['path'], $defaults, $requirements, $options, $host, $schemes, $methods);
 
             if($i18n) {
-                $route->setPath($this->helper->alterPath($config['path'], $locale));
+                $route->setPath('/' . $locale . $this->helper->alterPath($config['path'], $locale));
                 $route->setDefaults($this->helper->alterdefaults($defaults, $locale));
             }
 
