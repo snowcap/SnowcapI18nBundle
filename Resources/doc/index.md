@@ -128,3 +128,25 @@ public function landingAction)
 ```
 
 The above route will be imported as a regular, locale-agnostic route.
+
+## Twig extension
+
+SnowcapI18nBundle comes with a Twig extension that offers a few functions / filters.
+
+**get_active_locales**
+
+The `get_active_locales` twig function returns an associative array of locale iso codes and locale names. It takes an optional single *locale* parameter, that is used to build locale names. By default, the request locale will be used.
+
+A simple example, showing how you could build a language switcher with that function:
+
+```jinja
+<ul class="locales">
+    {% for locale_code, locale_name in get_active_locales() %}
+        <li>
+            <a href="{{ path(route_name, route_params|merge({'_locale': locale_code})) }}">
+                {{ locale_name }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+```
