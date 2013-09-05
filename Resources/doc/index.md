@@ -1,4 +1,4 @@
-Getting started with SnowcapAdminBundle
+Getting started with SnowcapI18nBundle
 =======================================
 
 SnowcapI18nBundle provides a few useful features for multilingual websites.
