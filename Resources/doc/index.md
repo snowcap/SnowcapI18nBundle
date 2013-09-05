@@ -62,3 +62,44 @@ snowcap_i18n:
     locales: ["fr", "en"]
 
 ```
+
+## Route annotations
+
+SnowcapI18nBundle provides a simple annotation class, similar to the one provided by [Sensio FrameworkExtraBundke](http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/routing.html).
+
+### Basic usage
+
+Importing annotations-based i18n routes is straightforward:
+
+```yml
+# app/config/routing.yml
+
+hello_world:
+    resource: "@HelloWorldBundle/Controller/"
+    type: annotation_i18n
+
+```
+
+In your controllers, use the annotation as you would use the vanilla @Route one:
+
+``` php
+<?php
+// src/Hello/WorldBundle/Controller/DefaultController.php
+
+// ...
+
+/**
+ * @I18nRoute("hello", name="say_hello")
+ */
+public function indexAction)
+{
+    // ...
+}
+```
+
+When parsing your controllers, for each @I18nRoute annotation, SnowcapI18nBundle will create one route per locale (as specified in your config.yml file).
+
+Assumong we have to locales ("fr" and "en"), the above example will result in the following routes being created :
+
+* say_hello.fr (/fr/say_hello)
+* say_hello.en (/en/say_hello)
