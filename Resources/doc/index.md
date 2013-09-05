@@ -104,6 +104,9 @@ Assuming we have to locales ("fr" and "en"), the above example will result in th
 * say_hello.fr (/fr/say_hello)
 * say_hello.en (/en/say_hello)
 
+Please note that internally, **SnowcapI18nBundle replace the default router with its own**. While this will be fine in most cases, 
+you will run into trouble if you have already using a custom router class.
+
 ### Using a non-i18n route among i18n routes
 
 In the above example, every route in @HelloWorldBundle/Controller/ is imported as an i18n route (see the `routing.yml` file). While it is quite practical, you might need to keep a few locale-neutral routes 
