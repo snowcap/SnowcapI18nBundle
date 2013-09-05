@@ -86,7 +86,7 @@ In your controllers, use the annotation as you would use the vanilla @Route one:
 <?php
 // src/Hello/WorldBundle/Controller/DefaultController.php
 
-// ...
+use Snowcap\I18nBundle\Annotation\I18nRoute;
 
 /**
  * @I18nRoute("hello", name="say_hello")
