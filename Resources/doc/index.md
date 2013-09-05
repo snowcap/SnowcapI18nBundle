@@ -105,7 +105,7 @@ Assuming we have to locales ("fr" and "en"), the above example will result in th
 * say_hello.en (/en/say_hello)
 
 Please note that internally, **SnowcapI18nBundle replace the default router with its own**. While this will be fine in most cases, 
-you will run into trouble if you have already using a custom router class.
+you will run into trouble if you are already using a custom router class.
 
 ### Using a non-i18n route among i18n routes
 
