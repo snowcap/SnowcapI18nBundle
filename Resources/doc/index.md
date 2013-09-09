@@ -23,7 +23,7 @@ Add SnowcapI18nBundle in your composer.json:
 ```js
 {
     "require": {
-        "snowcap/admin-bundle": "dev-master"
+        "snowcap/i18n-bundle": "dev-master"
     }
 }
 ```
