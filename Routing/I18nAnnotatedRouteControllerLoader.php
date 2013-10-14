@@ -9,7 +9,7 @@ use Snowcap\I18nBundle\Registry;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class I18nClassLoader extends AnnotatedRouteControllerLoader {
+class I18nAnnotatedRouteControllerLoader extends AnnotatedRouteControllerLoader {
     /**
      * @var string
      */

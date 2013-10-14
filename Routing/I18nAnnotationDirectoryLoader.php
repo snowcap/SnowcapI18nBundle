@@ -4,7 +4,7 @@ namespace Snowcap\I18nBundle\Routing;
 
 use Symfony\Component\Routing\Loader\AnnotationDirectoryLoader;
 
-class I18nDirectoryLoader extends AnnotationDirectoryLoader {
+class I18nAnnotationDirectoryLoader extends AnnotationDirectoryLoader {
     /**
      * @param mixed $resource
      * @param null $type

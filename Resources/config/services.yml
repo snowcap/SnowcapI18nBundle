@@ -18,13 +18,19 @@ services:
         arguments: [@translator, %snowcap_i18n.routing.translation_domain%]
 
     snowcap_i18n.routing_loader_class:
-        class: Snowcap\I18nBundle\Routing\I18nClassLoader
+        class: Snowcap\I18nBundle\Routing\I18nAnnotatedRouteControllerLoader
         arguments: [@annotation_reader, @snowcap_i18n.routing_loader_helper, @snowcap_i18n]
         tags:
             - { name: routing.loader }
 
-    snowcap_i18n.routing_loader_directory:
-        class: Snowcap\I18nBundle\Routing\I18nDirectoryLoader
+    snowcap_i18n.routing_loader_annotation_directory:
+        class: Snowcap\I18nBundle\Routing\I18nAnnotationDirectoryLoader
+        arguments: [@file_locator, @snowcap_i18n.routing_loader_class]
+        tags:
+            - { name: routing.loader }
+
+    snowcap_i18n.routing_loader_annotation_file:
+        class: Snowcap\I18nBundle\Routing\I18nAnnotationFileLoader
         arguments: [@file_locator, @snowcap_i18n.routing_loader_class]
         tags:
             - { name: routing.loader }
