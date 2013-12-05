@@ -6,6 +6,7 @@ use Snowcap\I18nBundle\Registry;
 use \Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Locale\Locale;
+use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
 
 use Snowcap\I18nBundle\Util\DateFormatter;
 
@@ -38,9 +39,17 @@ class LocaleExtension extends \Twig_Extension
      */
     public function getGlobals()
     {
+        $locales = $this->registry->getRegisteredLocales();
+
+        try {
+            $locale = $this->container->get('request')->getLocale();
+        } catch (InactiveScopeException $e) {
+            $locale = current($locales);
+        }
+
         return array(
-            '_locale' => $this->container->get('request')->getLocale(),
-            '_locales' => $this->registry->getRegisteredLocales()
+            '_locale' => $locale,
+            '_locales' => $locales
         );
     }
 
