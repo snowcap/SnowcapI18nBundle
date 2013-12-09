@@ -52,11 +52,13 @@ class I18nRouter extends Router {
     /**
      * @param string $name
      * @param array $parameters
-     * @param string $referenceType
+     * @param bool|string $referenceType
+     * @throws \UnexpectedValueException
      * @return string
      */
     public function generate($name, $parameters = array(), $referenceType = self::ABSOLUTE_PATH)
     {
+        $originalParameters = $parameters;
         try {
             if(isset($parameters['_locale'])) {
                 $locale = $parameters['_locale'];
@@ -73,7 +75,7 @@ class I18nRouter extends Router {
             return parent::generate($i18nName, $parameters, $referenceType);
         }
         catch(RouteNotFoundException $e) {
-            return parent::generate($name, $parameters, $referenceType);
+            return parent::generate($name, $originalParameters, $referenceType);
         }
     }
 }
