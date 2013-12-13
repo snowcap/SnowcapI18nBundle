@@ -9,7 +9,7 @@ class I18nRoute {
     /**
      * @var array
      */
-    static private $validProperties = array('path', 'name', 'requirements', 'options', 'defaults', 'host', 'methods', 'schemes', 'pattern');
+    static private $validProperties = array('path', 'name', 'requirements', 'options', 'defaults', 'host', 'methods', 'schemes', 'pattern', 'condition');
 
     /**
      * @var array
@@ -40,7 +40,7 @@ class I18nRoute {
             $propertyName = strtolower(substr($name, 3));
 
             if(!in_array($propertyName, self::$validProperties)) {
-                throw new \Exception('cannot call');
+                throw new \Exception(sprintf('cannot call propertyName "%s"', $propertyName));
             }
 
             if(isset($this->data[$propertyName])) {
@@ -50,7 +50,7 @@ class I18nRoute {
             return null;
         }
         else {
-            throw new \Exception('cannot call');
+            throw new \Exception(sprintf('cannot call name "%s"', $name));
         }
     }
 }
