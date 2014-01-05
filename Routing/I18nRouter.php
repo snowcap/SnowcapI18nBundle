@@ -5,6 +5,7 @@ namespace Snowcap\I18nBundle\Routing;
 use Snowcap\I18nBundle\Registry;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RequestContext;
 
@@ -31,22 +32,6 @@ class I18nRouter extends Router {
         parent::__construct($container, $resource, $options, $context);
 
         $this->registry = $registry;
-    }
-
-    /**
-     * @param string $url
-     * @return array
-     */
-    public function match($url)
-    {
-        $match = parent::match($url);
-
-        // if a _locale parameter isset remove the .locale suffix that is appended to each route in I18nRoute
-        if (!empty($match['_locale']) && preg_match('#^(.+)\.' . preg_quote($match['_locale'], '#') . '+$#', $match['_route'], $route)) {
-            $match['_route'] = $route[1];
-        }
-
-        return $match;
     }
 
     /**
@@ -77,5 +62,45 @@ class I18nRouter extends Router {
         catch(RouteNotFoundException $e) {
             return parent::generate($name, $originalParameters, $referenceType);
         }
+    }
+
+    /**
+     * @param string $pathinfo
+     * @return array
+     */
+    public function match($pathinfo)
+    {
+        $match = parent::match($pathinfo);
+
+        return $this->processMatch($match);
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function matchRequest(Request $request)
+    {
+        $match = parent::matchRequest($request);
+
+        return $this->processMatch($match);
+    }
+
+    /**
+     * Process the match array so that if it contains a _locale parameter,
+     * we remove the .locale suffix that is appended to each route in the i18n routing system
+     *
+     * @param array $match
+     * @return array
+     */
+    private function processMatch(array $match) {
+        if (
+            !empty($match['_locale']) &&
+            preg_match('#^(.+)\.' . preg_quote($match['_locale'], '#') . '+$#', $match['_route'], $matches)
+        ) {
+            $match['_route'] = $matches[1];
+        }
+
+        return $match;
     }
 }
