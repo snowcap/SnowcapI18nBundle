@@ -60,7 +60,12 @@ class LocaleExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array('get_active_locales' => new \Twig_Function_Method($this, 'getActiveLocales'));
+        return array(
+            new \Twig_SimpleFunction('get_active_locales', array($this, 'getActiveLocales')),
+            new \Twig_SimpleFunction('set_locale_switch_paths', array($this, 'setSwitchPaths')),
+            new \Twig_SimpleFunction('get_locale_switch_paths', array($this, 'getSwitchPaths')),
+            new \Twig_SimpleFunction('add_locale_switch_path', array($this, 'addSwitchPath')),
+        );
     }
 
     /**
@@ -71,9 +76,9 @@ class LocaleExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'country' => new \Twig_Filter_Method($this, 'getCountry'),
-            'language' => new \Twig_Filter_Method($this, 'getLanguage'),
-            'locale_date' => new \Twig_Filter_Method($this, 'getLocaleDate'),
+            new \Twig_SimpleFilter('country', array($this, 'getCountry')),
+            new \Twig_SimpleFilter('language', array($this, 'getLanguage')),
+            new \Twig_SimpleFilter('locale_date', array($this, 'getLocaleDate')),
         );
     }
 
@@ -172,6 +177,7 @@ class LocaleExtension extends \Twig_Extension
 
     /**
      * @param string $locale
+     * @param string|null $displayLocale
      * @return string
      */
     public function getLanguage($locale, $displayLocale = null) {
@@ -203,5 +209,30 @@ class LocaleExtension extends \Twig_Extension
         $formatter = new DateFormatter();
 
         return $formatter->format($date, $dateType, $timeType, $locale, $pattern);
+    }
+
+    /**
+     * @param array $paths
+     */
+    public function setSwitchPaths(array $paths)
+    {
+        $this->registry->setSwitchPaths($paths);
+    }
+
+    /**
+     * @return array
+     */
+    public function getSwitchPaths()
+    {
+        return $this->registry->getSwitchPaths();
+    }
+
+    /**
+     * @param string $locale
+     * @param string $path
+     */
+    public function addSwitchPath($locale, $path)
+    {
+        $this->registry->addSwitchPath($locale, $path);
     }
 }
