@@ -52,7 +52,7 @@ class I18nRouter extends Router {
                 $locale = $this->getContext()->getParameter('_locale');
             }
             if(!in_array($locale, $this->registry->getRegisteredLocales())) {
-                throw new \UnexpectedValueException(sprintf('The locale %s has not ben registered in the snowcap_i18n config', $locale));
+                throw new \UnexpectedValueException(sprintf('The locale %s has not been registered in the snowcap_i18n config', $locale));
             }
             $i18nName = $name . '.' . $locale;
             unset($parameters['_locale']);
