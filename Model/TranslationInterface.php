@@ -1,12 +1,10 @@
 <?php
 
-namespace Snowcap\I18nBundle\Entity;
+namespace Snowcap\I18nBundle\Model;
 
 
 /**
  * Interface TranslationInterface
- *
- * Implement this interface on your translation entity
  *
  * @package Snowcap\I18nBundle\Entity
  */
@@ -30,11 +28,4 @@ interface TranslationInterface
      * @return $this
      */
     public function setTranslated(TranslatableInterface $translatable);
-
-    /**
-     * Method used to define if an entity should be considered as empty
-     * This method is useful in a form collection
-     * @return boolean
-     */
-    public function isEmpty();
-} 
+}

@@ -1,16 +1,15 @@
 <?php
 
-namespace Snowcap\I18nBundle\Entity\Helper;
+namespace Snowcap\I18nBundle\Entity;
+
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Snowcap\I18nBundle\Entity\TranslationInterface;
+use Snowcap\I18nBundle\Model\TranslationInterface;
 
 /**
  * Class TranslatableTrait
  *
- * Helper to use on your translatable entity
- * You need to define the "translation" property on your entity,
- * the Trait provides you all the common accessors
+ * You need to overwrite the "translation" property on your entity (this Trait provides only the shortcut methods)
  *
  * @package Snowcap\I18nBundle\Entity
  */
@@ -23,14 +22,16 @@ trait TranslatableTrait
      */
     public function getTranslations()
     {
+        $this->initTranslations();
+
         return $this->translations;
     }
 
     /**
-     * @param \Doctrine\Common\Collections\ArrayCollection $translations
+     * @param array $translations
      * @return $this
      */
-    public function setTranslations(ArrayCollection $translations)
+    public function setTranslations(array $translations)
     {
         $this->translations = $translations;
 
@@ -43,8 +44,12 @@ trait TranslatableTrait
      */
     public function addTranslation(TranslationInterface $translation)
     {
-        $translation->setTranslated($this);
-        $this->translations[$translation->getLocale()] = $translation;
+        $this->initTranslations();
+
+        if (!$this->translations->contains($translation)) {
+            $translation->setTranslated($this);
+            $this->translations->set($translation->getLocale(), $translation);
+        }
 
         return $this;
     }
@@ -54,7 +59,11 @@ trait TranslatableTrait
      */
     public function removeTranslation(TranslationInterface $translation)
     {
-        $this->translations->removeElement($translation);
+        $this->initTranslations();
+
+        if ($this->translations->contains($translation)) {
+            $this->translations->removeElement($translation);
+        }
     }
 
     /**
@@ -67,7 +76,7 @@ trait TranslatableTrait
             return $this->translations->get($locale);
         }
 
-        return $this->translations->first();
+        return null;
     }
 
     /**
@@ -76,6 +85,19 @@ trait TranslatableTrait
      */
     public function hasTranslation($locale)
     {
+        $this->initTranslations();
+
         return $this->translations->containsKey($locale);
+    }
+
+    /**
+     * Create a new instance of ArrayCollection if needed
+     *
+     */
+    private function initTranslations()
+    {
+        if(!$this->translations instanceof ArrayCollection) {
+            $this->translations = new ArrayCollection();
+        }
     }
 }

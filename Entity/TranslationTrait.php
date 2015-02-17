@@ -1,11 +1,10 @@
 <?php
 
-namespace Snowcap\I18nBundle\Entity\Helper;
+namespace Snowcap\I18nBundle\Entity;
+
 
 /**
  * Class TranslationTrait
- *
- * Helper to use on your translation entity
  *
  * @package Snowcap\I18nBundle\Entity
  */
@@ -14,7 +13,7 @@ trait TranslationTrait
     /**
      * @var string
      *
-     * @ORM\Column(name="locale", type="string", length=2)
+     * @ORM\Column(name="locale", type="string", length=5)
      */
     protected $locale;
 
