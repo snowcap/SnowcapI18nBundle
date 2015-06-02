@@ -7,7 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Routing\AnnotatedRouteControllerLoader;
 use Snowcap\I18nBundle\Registry;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class I18nAnnotatedRouteControllerLoader extends AnnotatedRouteControllerLoader {
     /**
@@ -67,19 +66,19 @@ class I18nAnnotatedRouteControllerLoader extends AnnotatedRouteControllerLoader 
 
         foreach($this->registry->getRegisteredLocales() as $locale) {
             $i18nAnnot = new Route($annot->data);
-            $i18nGlobals = $globals;
 
             if($i18n) {
                 $i18nAnnot->setName($this->helper->alterName($i18nAnnot->getName(), $locale));
                 $i18nAnnot->setPath($this->helper->alterPath($i18nAnnot->getPath(), $locale));
                 $i18nAnnot->setDefaults($this->helper->alterdefaults($i18nAnnot->getDefaults(), $locale));
 
-                $i18nGlobals['path'] = $this->helper->alterPath($i18nGlobals['path'], $locale);
-
-                $i18nGlobals['path'] = rtrim('/' . $locale . '/' . ltrim($i18nGlobals['path'], '/'), '/');
+                if (isset($globals['path']) && !empty($globals['path'])) {
+                    $globals['path'] = $this->helper->alterPath($globals['path'], $locale);
+                    $globals['path'] = rtrim('/' . $locale . '/' . ltrim($globals['path'], '/'), '/');
+                }
             }
 
-            parent::addRoute($collection, $i18nAnnot, $i18nGlobals, $class, $method);
+            parent::addRoute($collection, $i18nAnnot, $globals, $class, $method);
         }
     }
 }

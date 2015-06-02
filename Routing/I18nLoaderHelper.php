@@ -17,6 +17,7 @@ class I18nLoaderHelper {
 
     /**
      * @param TranslatorInterface $translator
+     * @param string $translationDomain
      */
     public function __construct(TranslatorInterface $translator, $translationDomain)
     {
@@ -35,15 +36,15 @@ class I18nLoaderHelper {
     }
 
     /**
-     * @param $path
-     * @param $locale
+     * @param string $path
+     * @param string $locale
      * @return string
      */
     public function alterPath($path, $locale)
     {
-        $translatedPath = trim($this->translator->trans($path, array(), $this->translationDomain, $locale), '/');
+        $translatedPath = $this->translator->trans($path, array(), $this->translationDomain, $locale);
 
-        return rtrim('/' . $translatedPath, '/');
+        return '/' . trim( $translatedPath, '/');
     }
 
     /**

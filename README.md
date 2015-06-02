@@ -1,4 +1,4 @@
-SnowcapAdminBundle
+SnowcapI18nBundle
 ==================
 
 The SnowcapI18nBundle provides a set of tools and helpers for multi-locale websites.
@@ -7,9 +7,6 @@ Features include:
 
 - A @I18nRoute annotation to handle localized routes based on locale prefixes
 - A few twig functions and filters
-
-**Caution:** This bundle is developed in sync with [symfony's repository](https://github.com/symfony/symfony).
-For Symfony 2.2.x, you need to use the 2.2.x branch of the bundle.
 
 [![Build Status](https://secure.travis-ci.org/snowcap/SnowcapI18nBundle.png?branch=master)](http://travis-ci.org/snowcap/SnowcapI18nBundle)
 
