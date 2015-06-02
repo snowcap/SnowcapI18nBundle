@@ -70,11 +70,12 @@ class I18nAnnotatedRouteControllerLoader extends AnnotatedRouteControllerLoader 
             if($i18n) {
                 $i18nAnnot->setName($this->helper->alterName($i18nAnnot->getName(), $locale));
                 $i18nAnnot->setPath($this->helper->alterPath($i18nAnnot->getPath(), $locale));
-                $i18nAnnot->setDefaults($this->helper->alterdefaults($i18nAnnot->getDefaults(), $locale));
+                $i18nAnnot->setDefaults($this->helper->alterDefaults($i18nAnnot->getDefaults(), $locale));
 
                 if (isset($globals['path']) && !empty($globals['path'])) {
-                    $globals['path'] = $this->helper->alterPath($globals['path'], $locale);
-                    $globals['path'] = rtrim('/' . $locale . '/' . ltrim($globals['path'], '/'), '/');
+                    $globals['path'] = '/' . $locale . '/' . ltrim($this->helper->alterPath($globals['path'], $locale), '/');
+                } else {
+                    $globals['path'] = '/' . $locale;
                 }
             }
 

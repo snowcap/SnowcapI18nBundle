@@ -21,8 +21,8 @@ class I18nYamlFileLoader extends YamlFileLoader {
 
     /**
      * @param FileLocatorInterface $locator
-     * @param array $locales
-     * @param string $translationDomain
+     * @param I18nLoaderHelper $helper
+     * @param Registry $registry
      */
     public function __construct(FileLocatorInterface $locator, I18nLoaderHelper $helper, Registry $registry)
     {
@@ -34,7 +34,7 @@ class I18nYamlFileLoader extends YamlFileLoader {
 
     /**
      * @param mixed $resource
-     * @param null $type
+     * @param string|null $type
      * @return bool
      */
     public function supports($resource, $type = null)
@@ -42,6 +42,12 @@ class I18nYamlFileLoader extends YamlFileLoader {
         return is_string($resource) && 'yml' === pathinfo($resource, PATHINFO_EXTENSION) && (!$type || 'yaml_i18n' === $type);
     }
 
+    /**
+     * @param RouteCollection $collection
+     * @param string $name
+     * @param array $config
+     * @param string $path
+     */
     protected function parseRoute(RouteCollection $collection, $name, array $config, $path)
     {
         $defaults = isset($config['defaults']) ? $config['defaults'] : array();
@@ -56,8 +62,8 @@ class I18nYamlFileLoader extends YamlFileLoader {
             $route = new Route($config['path'], $defaults, $requirements, $options, $host, $schemes, $methods);
 
             if($i18n) {
-                $route->setPath('/' . $locale . $this->helper->alterPath($config['path'], $locale));
-                $route->setDefaults($this->helper->alterdefaults($defaults, $locale));
+                $route->setPath('/' . $locale . '/' . ltrim($this->helper->alterPath($config['path'], $locale), '/'));
+                $route->setDefaults($this->helper->alterDefaults($defaults, $locale));
             }
 
             $i18nName = $i18n ? $this->helper->alterName($name, $locale) : $name;

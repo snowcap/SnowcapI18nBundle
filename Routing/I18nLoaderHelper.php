@@ -42,9 +42,7 @@ class I18nLoaderHelper {
      */
     public function alterPath($path, $locale)
     {
-        $translatedPath = $this->translator->trans($path, array(), $this->translationDomain, $locale);
-
-        return '/' . trim( $translatedPath, '/');
+        return $this->translator->trans($path, array(), $this->translationDomain, $locale);
     }
 
     /**
@@ -52,7 +50,7 @@ class I18nLoaderHelper {
      * @param string $locale
      * @return array
      */
-    public function alterdefaults(array $defaults, $locale)
+    public function alterDefaults(array $defaults, $locale)
     {
         return array_merge($defaults, array('_locale' => $locale));
     }
