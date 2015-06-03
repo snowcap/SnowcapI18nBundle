@@ -66,20 +66,21 @@ class I18nAnnotatedRouteControllerLoader extends AnnotatedRouteControllerLoader 
 
         foreach($this->registry->getRegisteredLocales() as $locale) {
             $i18nAnnot = new Route($annot->data);
+            $i18nGlobals = $globals;
 
             if($i18n) {
                 $i18nAnnot->setName($this->helper->alterName($i18nAnnot->getName(), $locale));
                 $i18nAnnot->setPath($this->helper->alterPath($i18nAnnot->getPath(), $locale));
                 $i18nAnnot->setDefaults($this->helper->alterDefaults($i18nAnnot->getDefaults(), $locale));
 
-                if (isset($globals['path']) && !empty($globals['path'])) {
-                    $globals['path'] = '/' . $locale . '/' . ltrim($this->helper->alterPath($globals['path'], $locale), '/');
+                if (isset($i18nGlobals['path']) && !empty($i18nGlobals['path'])) {
+                    $i18nGlobals['path'] = '/' . $locale . '/' . ltrim($this->helper->alterPath($i18nGlobals['path'], $locale), '/');
                 } else {
-                    $globals['path'] = '/' . $locale;
+                    $i18nGlobals['path'] = '/' . $locale;
                 }
             }
 
-            parent::addRoute($collection, $i18nAnnot, $globals, $class, $method);
+            parent::addRoute($collection, $i18nAnnot, $i18nGlobals, $class, $method);
         }
     }
 }
