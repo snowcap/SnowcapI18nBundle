@@ -18,6 +18,10 @@ file in this bundle:
 
 [Read the Documentation for master](https://github.com/snowcap/SnowcapI18nBundle/blob/master/Resources/doc/index.md)
 
+The Changelog is available here:
+
+[Read the Changelog for master](https://github.com/snowcap/SnowcapI18nBundle/blob/master/Resources/doc/changelog.md)
+
 Installation
 ------------
 
